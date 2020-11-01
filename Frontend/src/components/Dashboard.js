@@ -1,5 +1,6 @@
-import React, { useEffect }  from 'react';
+import React, { useEffect}  from 'react';
 import clsx from 'clsx';
+import { useHistory } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -103,7 +104,8 @@ export default function Dashboard(props) {
   const [user, setUser] = React.useState({name:"Juan David",email:"Juan.navarro@mail.escuelaing.edu.co"});
   const [filters] = React.useState([]);
   const [state, setState] = React.useState(0);
-  const [taskList ,setTaskList] = React.useState([]); 
+  const [taskList ,setTaskList] = React.useState([]);
+  let history = useHistory; 
   
   useEffect (() => {
     setTaskList([]);
@@ -132,6 +134,11 @@ export default function Dashboard(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };  
+  const handleUrl = (uri) => {
+    alert("Holi")
+    history.push(uri);
+    //window.location.href = uri
+  }
 
   return (
     <div className={classes.root}>
@@ -228,7 +235,7 @@ export default function Dashboard(props) {
                             </React.Fragment>
                         </CardContent>
                         <CardActions>
-                            <Button size="small">Leer más</Button>
+                            <Button size="small" onClick={() => (window.location = task.fileUrl)}>View Resource</Button>
                         </CardActions>
                     </Card>
                   </Grid>

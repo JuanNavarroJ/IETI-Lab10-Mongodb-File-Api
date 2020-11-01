@@ -38,10 +38,7 @@ export default function NewTask(props) {
     };
 
     const addImg = () => {
-        console.log(file)
-        console.log(file.name)
         let urlimg = file.name
-        console.log(urlimg)
         let td = {description:document.getElementById("desc").value,status:state,fileUrl:"http://localhost:8080/api/files/"+urlimg}
         const formData = new FormData();
         formData.append('file', file);
@@ -58,7 +55,6 @@ export default function NewTask(props) {
     }
 
     const addTodo = (td) => {
-        console.log(td)
         fetch('http://localhost:8080/api/todo' , {
             method:'POST',
             headers:{
