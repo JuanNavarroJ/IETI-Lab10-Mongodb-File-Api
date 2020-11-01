@@ -2,7 +2,9 @@ package eci.ieti.controller;
 
 
 import com.mongodb.client.gridfs.model.GridFSFile;
+import eci.ieti.data.TodoRepository;
 import eci.ieti.data.model.Todo;
+import eci.ieti.data.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -17,18 +19,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @RequestMapping("api")
 @RestController
 public class RESTController {
 
-
-    //TODO inject components (TodoRepository and GridFsTemplate)
     @Autowired
     GridFsTemplate gridFsTemplate;
 
+    @Autowired
+    TodoRepository todoRepository;
 
+    @CrossOrigin("*")
     @RequestMapping("/files/{filename}")
     public ResponseEntity<InputStreamResource> getFileByName(@PathVariable String filename) throws IOException {
         try {
@@ -45,23 +49,28 @@ public class RESTController {
     @CrossOrigin("*")
     @PostMapping("/files")
     public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
-
-        //gridFsTemplate.store(file.getInputStream(), fileName, file.getContentType());
-        return null;
+        try {
+            gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType());
+            return file.getOriginalFilename();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @CrossOrigin("*")
     @PostMapping("/todo")
     public Todo createTodo(@RequestBody Todo todo) {
-        //TODO implement method
-        return null;
+        todo.setResponsible(new User("Juan Navarro","Juan.navarro@mail.escuelaing.edu.co","7"));
+        todo.setDueDate(new Date());
+        todo.setPriority(5);
+        todoRepository.save(todo);
+        return todo;
     }
 
     @CrossOrigin("*")
     @GetMapping("/todo")
     public List<Todo> getTodoList() {
-        //TODO implement method
-        return null;
+        return todoRepository.findAll();
     }
 
 }

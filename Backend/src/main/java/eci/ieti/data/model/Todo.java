@@ -1,7 +1,10 @@
 package eci.ieti.data.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
+@Document
 public class Todo {
 
     private String description;
@@ -16,11 +19,25 @@ public class Todo {
 
     private String fileUrl;
 
-
     public Todo() {
     }
 
-    public Todo(String description,Date dueDate, User responsible) {
+    public Todo(String description, String status, String fileUrl) {
+        this.description = description;
+        this.status = status;
+        this.fileUrl = fileUrl;
+    }
+
+    public Todo(String description, Date dueDate, User responsible, String status, String fileUrl) {
+        this.description = description;
+        this.dueDate = dueDate;
+        this.responsible = responsible;
+        this.status = status;
+        this.fileUrl = fileUrl;
+        this.priority = 5;
+    }
+
+    public Todo(String description, Date dueDate, User responsible) {
         this.description = description;
         this.priority = 5;
         this.dueDate = dueDate;
